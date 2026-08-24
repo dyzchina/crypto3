@@ -1,0 +1,304 @@
+%%========================================================================
+%%  File   : cex_contagion_v2.0/manuscript/main_eca_v2_spine.tex
+%%  Purpose: Immutable spine (title + abstract + §1) baseline for v2.0 regeneration
+%%  Source : Extracted from cex_contagion_v0.1/manuscript/main_eca_v01.tex (v0.9-m)
+%%  Date   : 2026-08-18
+%%  Note   : This file is READ-ONLY. Regeneration in P2 must reuse this spine verbatim
+%%           except for character-level tweaks required by empirical consistency.
+%%========================================================================
+
+\documentclass[12pt]{article}
+
+%---- packages -----------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage[margin=1.25in]{geometry}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{titling}
+\usepackage{titlesec}
+\hypersetup{colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black}
+% \usepackage{lineno}\linenumbers  % ECA does not require line numbers
+
+% Match sample's title layout
+\pretitle{\begin{center}\LARGE\bfseries}
+\posttitle{\end{center}\vspace{0.5em}}
+\preauthor{\begin{center}\large}
+\postauthor{\end{center}}
+\predate{}
+\postdate{}
+\date{}
+
+% Section headings roman-bold, no "\S" prefix
+\titleformat*{\section}{\Large\bfseries}
+\titleformat*{\subsection}{\large\bfseries}
+
+%---- theorem environments (match sample: "Definition 1 (Name).") --------
+\newtheoremstyle{sampledef}%
+  {\topsep}{\topsep}%             margins
+  {\normalfont}%                  body
+  {}%                             indent
+  {\bfseries}%                    head
+  {.}%                            punct
+  { }%                            space
+  {\thmname{#1}~\thmnumber{#2}\thmnote{ (\normalfont\itshape#3\normalfont)}}
+\theoremstyle{sampledef}
+\newtheorem{definition}{Definition}
+\newtheorem{assumption}[definition]{Assumption}
+
+\newtheoremstyle{sampleplain}%
+  {\topsep}{\topsep}%
+  {\itshape}%                      body italic (theorem-style)
+  {}%
+  {\bfseries}%
+  {.}%
+  { }%
+  {\thmname{#1}~\thmnumber{#2}\thmnote{ (\normalfont\itshape#3\normalfont)}}
+\theoremstyle{sampleplain}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{corollary}[definition]{Corollary}
+
+\newtheoremstyle{sampleremark}%
+  {\topsep}{\topsep}%
+  {\normalfont}%
+  {}%
+  {\itshape}%                      head italic (remark-style)
+  {.}%
+  { }%
+  {\thmname{#1}~\thmnumber{#2}\thmnote{ (\normalfont\itshape#3\normalfont)}}
+\theoremstyle{sampleremark}
+\newtheorem{remark}[definition]{Remark}
+
+%---- shortcuts ---------------------------------------------------------
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\1}{\mathbf{1}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+%========================================================================
+\begin{document}
+
+\title{Unlikely Intersections in\\ Crypto Exchange Reserves:\\
+An O-Minimal Test for Systemic Risk}
+
+\author{Hongjun Gou\thanks{Industrial and Commercial Bank of China,
+  Beijing 100140, China. Email: \texttt{gouhongjun\_bs@cq.icbc.com.cn}.}}
+
+\maketitle
+
+%---- Abstract as a standalone block, sample-style ----------------------
+\begin{center}\textbf{Abstract}\end{center}
+
+Six major centralised cryptocurrency exchanges collapsed within
+seven months of each other. The cluster exposed a gap in systemic
+risk measurement that equity-based indices cannot fill: most crypto
+venues lack liquid equity. This paper builds a supervisory
+diagnostic from public reserve compositions. The joint reserve
+state is embedded in a product of simplices, and simultaneous
+distress corresponds to an unlikely intersection in the sense of
+the o-minimality programme in arithmetic geometry. Matching upper
+and lower bounds meet at a closed-form crossover threshold that
+separates a common systemic factor from idiosyncratic failure. The
+spot-Bitcoin ETF approval provides a sharp natural experiment. The
+full intersection attains its maximum in the approval quarter,
+whereas a stablecoin placebo shows no comparable jump. The
+diagnostic is computable in real time and yields a state-contingent
+capital buffer.
+
+\vspace{1em}
+\noindent\emph{JEL Classification:} C14, C58, G21, G28.
+
+\vspace{0.5em}
+\noindent\emph{Keywords:} O-minimal structures; Pila--Wilkie
+counting; unlikely intersections; systemic risk; cryptocurrency
+exchanges; proof of reserves; contagion; natural experiments.
+
+\bigskip
+
+%========================================================================
+\section{Introduction}\label{sec:intro}
+
+Cryptocurrency exchanges are among the most transparent
+counterparties in modern finance: every one of the top ten publishes
+on-chain proof-of-reserves attestations that reveal the composition
+of hundreds of billions of dollars of customer assets, and the
+underlying wallet balances are independently verifiable at
+block-level granularity. Yet no working measure of joint exchange
+distress uses this transparency. The paradox is not accidental. It
+reflects a fundamental gap in systemic risk measurement: standard
+indices are calibrated to institutions that publish audited equity
+prices, not to venues that publish audited reserve compositions.
+
+The events of the last three years exposed this gap concretely.
+Six major centralised cryptocurrency venues suspended withdrawals,
+entered chapter 11, or ceased operations within seven months of
+each other: Celsius on June 13, 2022, Voyager Digital on July 5,
+2022, FTX and Alameda Research on November 11, 2022, BlockFi on
+November 28, 2022, and Genesis Global Capital on January 19,
+2023.\footnote{The cluster is documented in the corresponding
+chapter~11 filings and independent on-chain forensics of
+\citet{Griffin-Kruger-Mei2023}. Voyager and Celsius filings
+pre-date the FTX collapse by four to five months, ruling out FTX
+as a mechanical trigger for the cluster and motivating the search
+for a common systemic factor.} The five principal events left an
+aggregate customer-liability shortfall of approximately \$16 billion
+(Table~\ref{tab:distress-events}), or roughly $8\%$ of the on-chain
+reserves of the three largest surviving venues at the end of 2025.
+The cluster is anomalous even by the standards of financial history:
+the events are separated by a median of twenty-seven days, share no
+common regulator, and predate the March 2023 banking shock by two
+months.
+
+Regulators, academics, and market participants attribute the
+cluster to contagion, but the operative sense in which the events
+cluster remains unclear. Whether the cluster is the tail of a
+common systemic factor, a sequence of idiosyncratic failures
+amplified by a shared network of counterparties, or the joint
+realisation of unlikely intersections in a carefully specified
+state space determines both the measure of systemic risk that is
+appropriate and the policy that follows from it.
+
+Two edges of the same question follow. What is the sharpest prior on
+the frequency of joint distress that public balance-sheet snapshots
+can support in the absence of parametric default-probability
+assumptions? And what geometric structure of the multi-venue state
+space delivers that prior? The regulatory edge and the mathematical
+edge, it turns out, admit a common answer. That answer defines a
+market-specific ceiling on how rare joint distress ought to be when
+no common systemic factor is present---the paper labels this ceiling
+the \emph{intersection frontier}, a geometric object derived from a
+Pila--Wilkie polylog prior on the reserve-simplex product and distinct
+from the connectedness-topological notion of
+\citet{DieboldYilmaz2014}---and identifying its location is the
+object of the paper.
+
+The paper draws on and contributes to three literatures.
+Structural network-contagion models---from \citet{AllenGale2000} and
+\citet{FreixasParigiRochet2000}, extended by
+\citet{EliottGolubJackson2014}, \citet{AcemogluOzdaglarTahbaz2015},
+\citet{GlassermanYoung2015}, \citet{RochetTirole1996},
+\citet{CabralesGaleGottardi2016}, and \citet{DuffieZhu2011}---take
+observed bilateral exposures as the primitive and study amplification
+mechanisms defined on it. They do not deliver a prior on joint
+distress when bilateral exposures are unobserved, which is the
+generic condition of cryptocurrency venues whose interbank market is
+largely off-chain. Systemic-risk measurement---from
+\citet{AdrianBrunnermeier2016CoVaR} through
+\citet{AchariaEtAl2017SES}, \citet{BrownleesEngle2017SRISK}, and
+\citet{BillioEtAl2012}---builds equity-based indices that require
+liquid equity data unavailable for most of the top cryptocurrency
+exchanges, and are silent on venues that trade only their native
+tokens or that operate outside the equity-market perimeter altogether.
+
+Crypto microstructure has documented the on-chain exposures the paper
+uses \citep{MakarovSchoar2020, GriffinShams2020,
+Griffin-Kruger-Mei2023, FooterKarolyi2023, AlexanderDeng2023,
+Cong-Li-Wang2021, FootcaultFuchsGoyalKaplan2024,
+LiuTsyvinski2021, GofmanUeda2023,
+Aramonte-Huang-Schrimpf2021, Fahlenbrach-Kirchler-Kremer2024},
+but has concentrated on price arbitrage rather than joint distress.
+\citet{Griffin-Kruger-Mei2023} is the closest neighbour of the
+present paper: it uses on-chain forensics to isolate the specific
+transaction pattern behind the FTX collapse and delivers an
+event-level narrative. The reserve-simplex-product framework of
+this paper is complementary in three ways: it produces a market-level
+rather than event-level diagnostic, it delivers a directional prior
+that a supervisor can evaluate without prosecutorial access to the
+failed venue's books, and it is computable in real time on public
+proof-of-reserves attestations alone. A parallel supervisory
+literature \citep{BCBS2021Crypto, FSB2023Crypto, Aldasoro2023Stablecoin}
+frames the same question from the regulator's side but has not had
+access to a formal counting theorem on the venues' joint state;
+the present paper closes that gap by borrowing from an unlikely
+place.
+
+The o-minimality programme in arithmetic geometry
+\citep{PilaWilkie2006, vandenDries1998Tame,
+Pila2011ManinMumford, BakkerKlinglerTsimerman2020,
+PeterzilStarchenko2009}, whose central methodological role in
+transferring model-theoretic tools into arithmetic geometry was
+cited in Jacob Tsimerman's 2026 Fields Medal work, produced over
+the past two decades the sharpest available upper bounds on the
+number of rational points of bounded height on the transcendental
+part of a definable set. The
+related Zilber--Pink family of conjectures
+\citep{Pink2005ZilberPink, Zilber2002} organises these bounds under
+the heading of \emph{unlikely intersections}; the present paper
+deploys the counting theorem itself \citep{PilaWilkie2006}, not any
+Zilber--Pink conjecture, and treats the reserve-simplex product as
+the finance-native definable set to which the counting theorem is
+applied. What is missing from the existing literature is any
+statement that ties the counting theorem to the finance-native
+reserve-simplex geometry that centralised exchanges disclose.
+
+Closing the gap requires an object that lives natively in both worlds.
+The paper constructs it: a reserve-simplex-product representation of
+the multi-venue state, built so that (i) every observed proof-of-reserves
+attestation is a marked point in the product, (ii) the joint-distress
+region becomes a definable subvariety in the o-minimal structure
+$\R_{\text{an,exp}}$, and (iii) the Pila--Wilkie counting theorem
+delivers a polylog prior on $k$-fold intersections that no
+parametric-default model can beat without invoking a common systemic
+factor. Above a closed-form crossover threshold in the co-distress
+count, the empirical intersection frequency exceeds the prior only if
+a common systemic factor is present; below it, isolated failures
+suffice. The two regimes meet at an intrinsic $\varepsilon$-loss that
+is the necessary cost of scale-induction, inherited directly from the
+Pila--Wilkie proof itself.
+
+The paper fills these gaps in three steps that deliver three parallel
+contributions.
+
+\emph{First, a reserve-simplex-product representation with a
+funding-implied third axis.} A balance-sheet snapshot is
+two-dimensional. The paper lifts it to three by constructing a
+directional-tube representation of the multi-venue state and
+adding a funding-implied axis unique to venues that host perpetual
+futures. The intersection frontier lives on this added axis.
+
+\emph{Second, matching o-minimal bounds on the co-distress
+frequency.} The paper establishes a pair of sharp, matching bounds
+on the frequency of joint distress: from above, a polylog prior no
+data-generating process can exceed without a common systemic factor;
+from below, a power-of-horizon frequency under any factor of
+positive persistence. The two rates meet at an intrinsic
+counting-inefficiency loss inherited from the o-minimal upper bound,
+the necessary cost that makes the frontier a frontier rather than
+a smooth boundary. The crossover threshold is closed-form and
+supplies a testable prediction on the regime.
+
+\emph{Third, a counter-intuitive concentration-as-mechanism
+finding.} Pooling across venues lifts the empirical intersection
+frequency toward the wild regime around a regulatory shock that
+raised the safe-asset floor; a stablecoin-issuer placebo shows no
+comparable move. Three policy corollaries follow: a real-time
+intersection-count audit, a state-contingent capital buffer, and
+a coordinated-disclosure recipe.
+
+The remainder of the paper proceeds as follows. Section~\ref{sec:setup}
+introduces the reserve-simplex product, the directional-tube
+representation, and the o-minimal representation of the joint
+distress region. Section~\ref{sec:bounds} proves the bounds on the
+intersection frontier. Section~\ref{sec:empirics} carries out the
+empirical location of the frontier on the DefiLlama on-chain panel
+and the January 2024 spot-Bitcoin ETF natural experiment.
+Section~\ref{sec:policy} discusses supervisory, capital-adequacy,
+and monitoring implications. Section~\ref{sec:conclusion} concludes.
+Proofs and technical lemmas appear in the Appendix. All data and code
+are public, archived with SHA-256 hashes, and reproduce every reported
+figure, table, and test in the paper (Appendix~\ref{app:data}).
+
+%========================================================================

@@ -1,0 +1,2 @@
+specification,outcome,H_max_lag,n_venues_pooled,beta_hat,SE,ci_95_lo,ci_95_hi
+OLS_log_gamma_on_log_h_pooled,long_tail_alt_share,6,3,0.858439,0.213016,0.440929,1.275950

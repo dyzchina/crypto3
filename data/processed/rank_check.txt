@@ -1,0 +1,10 @@
+Rank check on 3-venue centred reserve matrix
+Matrix shape: (39, 5)  (39 venue-quarter obs x 5 asset classes)
+Singular values: [0.8164080838658327, 0.5740810313993527, 0.5303561180049589, 0.23536394930175047, 0.00014750410311190954]
+Rank at tol 1e-6: 5
+Smallest s.v.: 0.000148
+Meaningful rank (s.v. > 0.01475): 4
+
+Interpretation: because row shares sum to 1, at most rank = m - 1 = 4.
+Observed meaningful rank 4 == 4 means the 3 venues span the full
+admissible affine subspace of the simplex; transversality holds strictly.

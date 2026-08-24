@@ -1,0 +1,39 @@
+# SHA-256 manifest for cex_contagion_v2.0 (v2.0-g)
+# Generated: 2026-08-24 10:01 local time
+# Total files: 33   Total bytes: 284,030,765
+
+SHA-256                                                            size(bytes)  mtime       path
+----------------------------------------------------------------  ------------  ----------  ----
+7c9631f6a3b1009f2e1c094a0c1e243946165cf920922218c8bf0dfe5f815c05      57991022  2026-08-17  data/raw_por/binance/_binance_raw.json
+c1d1c04b591ecd16b850fc68e25886d8d91b72c8fbacb01a1e905a4f463a84d1         84089  2026-08-17  data/raw_por/binance/binance_quarterly.json
+09eebab27cc852286623650c018df6ba8753a277ceabae08f7faeb0ee9b944d0      48541328  2026-08-17  data/raw_por/bybit/_bybit_raw.json
+cacb7ad3d68bc7657b733fa11a1581024d212899a46e7c155337050b29c401f0         66235  2026-08-17  data/raw_por/bybit/bybit_quarterly.json
+8791e711915d2f04333e3abd3c61621d96b70c37813812d7badbc903fd816f30          2663  2026-08-18  data/raw_por/coinbase/edgar_10q_index.json
+3f741ba4b217f1dab8987f660c26b26ea9f9d38bcbfea85754bf410093d1f238      45571771  2026-08-17  data/raw_por/okx/_okx_raw.json
+faf1a751ba02266fd37977621844d84433e85d5a174c2ee97d299d2037b1de46         61476  2026-08-17  data/raw_por/okx/okx_quarterly.json
+8c95c6b5c2a5b863ddd403143dea7558a5725636609cb94ad0cd0161d0b8e3ba       9179529  2026-08-18  data/raw_stablecoin_placebo/stable_BUSD_id4.json
+4c3aad83ab7c083945593437d7f80dd4396d4d5247d6d3146936a41a22eca1f4      20139517  2026-08-18  data/raw_stablecoin_placebo/stable_DAI_id5.json
+a48fb5bf096a19fa8e9f49fa6e13d3d61c3856bd077673baf94a95ad9ea182d9        951552  2026-08-18  data/raw_stablecoin_placebo/stable_FDUSD_id119.json
+616874e0ba4d122c7026e9bad054b4913773ad0cfb4a4e64548f0933525e9ac4       8784169  2026-08-18  data/raw_stablecoin_placebo/stable_FRAX_id6.json
+4068d2441c19daafbb18f548b25b0de1d337c9d553d342de482a0fc024735e62       3782136  2026-08-18  data/raw_stablecoin_placebo/stable_LUSD_id8.json
+fea5a37a8fe8a7a960aa3ced2f1004a81eb377748da6da43a231a75289f2e4d4       1289329  2026-08-18  data/raw_stablecoin_placebo/stable_PYUSD_id120.json
+82069f722aa2404e973436103e7b2b3e26f0913234e7086dd05d250ee9b5b03f       4565035  2026-08-18  data/raw_stablecoin_placebo/stable_TUSD_id7.json
+b5828d8323a1f2bf93dc0cc32d42302eb59d182190f60ca124ff3944cc685e71      42234095  2026-08-18  data/raw_stablecoin_placebo/stable_USDC_id2.json
+4c9cdbcd866cd1fa5b78959cf7ad04d8fe2599cc46a196a8bb6ab560f611292c        801493  2026-08-18  data/raw_stablecoin_placebo/stable_USDP_id291.json
+1fecd33a0bb0384908fee9e01b04ad122f14484d69c0909124e78b7ba3e7f00b      39899669  2026-08-18  data/raw_stablecoin_placebo/stable_USDT_id1.json
+16b08730fc335a50f33a96bc8a3a0fdeefca96e619d55760ce5dc0a197cf3f0e         35805  2026-08-19  data/raw/controls/btc_daily.csv
+6501cf1c1c9a3550618ccb17fa83f49ea538eb4c8f22b76b9540f353764b4fc3         28412  2026-08-19  data/raw/controls/vix_daily.csv
+d547f475ccc8a15ab92d34cae07c2365b9d092dc472f446cdab38d27eccf32fd           258  2026-08-24  data/processed/anticipation_did.csv
+7491fe6ab80bb42fa0a6d67b07c61a28dba26d07f1a0357677fd78181d934fa1           170  2026-08-24  data/processed/beta_estimate.csv
+2f5e5bc510d9c032481aa60d90a28c3e592c89350f0277317db1e6ecba84ae66          9558  2026-08-24  data/processed/cex_por_snapshots.csv
+d0e366cf6d50ada2b86744f06edd1b1c4b1d2c84e4c276216d8b1708bef51950          2790  2026-08-24  data/processed/cex_por_snapshots_wide.csv
+3aa2983dd2f93c3a2fb5a9a29a7f57094ceec5015484d4af9d10346248aae29f           269  2026-08-24  data/processed/did_controls.csv
+9d57324ce6164b198c60fc445448c4ad14d8960c6058bfdbbe717d28cfcf949d           579  2026-08-24  data/processed/did_controls_summary.txt
+cfa342363c7dc1f31b24a3e8cc52abec06e59a15c3ff83401ba9453f11d6c252           287  2026-08-24  data/processed/did_estimates.csv
+6135198e1ad69578bf842d4005b643b36ec9c4f3c166f1c64aa5a785baebd2b7          1143  2026-08-24  data/processed/nk_estimates.csv
+2261fbe98ad0be1c249a94550b2a10fc91e3bb2b0e72bbac0b10a30ff7c82f38           166  2026-08-24  data/processed/pooling_gain.csv
+ed9fee5b196a93fece4b5f83e65708d20268b21f2719b9909e225d5965a4d538           533  2026-08-24  data/processed/rank_check.txt
+3e8f7fd5500d90643a48579b4ce476f197b0369c3852dc2502af5dbc4e99e873           853  2026-08-24  data/processed/robustness_grid.csv
+472aec64bcd469220cadccd0028071c4082d7993a3550164f4dff43bc8f3819e           151  2026-08-24  data/processed/stablecoin_placebo_did.csv
+0dd7466c9fecc3497a1d64c1a51bc16dc3e6fdbecab3a38b893f4ecad662803f          4486  2026-08-24  data/processed/stablecoin_placebo_panel.csv
+94861bb5715cc5bd1c41bd4195c863ccbb34cb3255be289dab3b7b0469b17832           197  2026-08-24  data/processed/wild_bootstrap.csv

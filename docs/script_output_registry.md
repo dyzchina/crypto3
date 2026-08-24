@@ -1,0 +1,106 @@
+# Script → Output Ownership Registry
+
+**Contract**: every artifact under `data/processed/`, `data/raw_por/`, `data/raw_stablecoin_placebo/`,
+`data/raw/controls/`, `manuscript/figures/`, `docs/`, and the repo-root manifest is written by **at
+most one** production script. Violations are flagged by `scripts/check_ownership.py` and must be
+resolved before any replication audit (`_replication_final.py`) or investor-facing build.
+
+**Origin**: v2.1-c fig4 non-determinism postmortem (Aug 2026). `estimator_nk.py` (Stage 2) and
+`fig4_v2_dual_threshold.py` (Stage 8c) were both writing `manuscript/figures/fig4_empirical_frontier.pdf`
+from two different specifications (legacy v0.4-δ single-threshold 1×3 vs. canonical v2.0 dual-threshold
+2×3). The order `run_all.sh` executed them meant the disk state was correct end-to-end, but
+`_replication_final.py` Test 7 rerun exposed the conflict (before-snapshot captured the
+`estimator_nk`-overwritten intermediate, after-snapshot the canonical). Fixed at v2.1-d by rerouting
+the legacy plot to a `_legacy.pdf` sink.
+
+---
+
+## Production scripts and their canonical outputs
+
+Ordered by `run_all.sh` stage. Only the 18 production scripts under `scripts/` are listed. Diagnostic
+helpers (`_replication_final.py`, `_audit_*`, `_fix_*`, `_wordcount_*`, `wordcount.py`, `loo_headline.py`,
+`_conclusion_wc.py`) are read-only or write ephemeral console output and are excluded from the
+ownership contract.
+
+### Stage 0 · Raw-data pulls (network required)
+
+| Script | Owned artifacts |
+|---|---|
+| `pull_defillama_cex.py`     | `data/raw_por/binance/_binance_raw.json`, `data/raw_por/binance/binance_quarterly.json`, `data/raw_por/okx/_okx_raw.json`, `data/raw_por/okx/okx_quarterly.json`, `data/raw_por/bybit/_bybit_raw.json`, `data/raw_por/bybit/bybit_quarterly.json` (via `_common.save_json`) |
+| `pull_coinbase_10q.py`      | `data/raw_por/coinbase/edgar_10q_index.json` |
+| `fetch_bankruptcy_dockets.py` | `data/bankruptcy_dockets/MANIFEST.txt`, `data/bankruptcy_dockets/README.md` |
+
+### Stage 1-2 · Aggregation & N_k estimation
+
+| Script | Owned artifacts |
+|---|---|
+| `aggregate_por.py`   | `data/processed/cex_por_snapshots.csv`, `data/processed/cex_por_snapshots_wide.csv` |
+| `estimator_nk.py`    | `data/processed/nk_estimates.csv`, `manuscript/figures/fig4_empirical_frontier_legacy.pdf` |
+
+> ⚠️ **`fig4_empirical_frontier_legacy.pdf` is archival diagnostics only** — never referenced by
+> `Main.tex`. The canonical Fig 4 lives at `fig4_empirical_frontier.pdf` and is owned
+> exclusively by `fig4_v2_dual_threshold.py` (Stage 8c). Do not restore `estimator_nk.py`'s
+> `OUT_FIG` back to the canonical filename — that is the v2.1-c bug.
+
+### Stage 3 · Regressions
+
+| Script | Owned artifacts |
+|---|---|
+| `did_regression.py`   | `data/processed/did_estimates.csv`, `data/processed/pooling_gain.csv`, `data/processed/rank_check.txt`, `data/processed/robustness_grid.csv` |
+| `did_controls.py`     | `data/processed/did_controls.csv`, `data/processed/did_controls_summary.txt`, `data/raw/controls/btc_daily.csv` (network-only path — offline path reads the pinned cache), `data/raw/controls/vix_daily.csv` (same) |
+| `wild_bootstrap.py`   | `data/processed/wild_bootstrap.csv` |
+
+### Stage 4-7 · Robustness & auxiliary estimators
+
+| Script | Owned artifacts |
+|---|---|
+| `anticipation_did.py`      | `data/processed/anticipation_did.csv` |
+| `stablecoin_placebo_did.py`| `data/processed/stablecoin_placebo_did.csv`, `data/processed/stablecoin_placebo_panel.csv` |
+| `beta_estimate.py`         | `data/processed/beta_estimate.csv` |
+
+### Stage 8 · Figures
+
+| Script | Owned artifacts |
+|---|---|
+| `figure_01_v04.py`           | `manuscript/figures/fig1_reserve_heatmap.pdf`, `manuscript/figures/fig3_share_trajectories.pdf` |
+| `fig_event_timeline.py`      | `manuscript/figures/fig2_event_timeline.pdf` |
+| `fig4_v2_dual_threshold.py`  | `manuscript/figures/fig4_empirical_frontier.pdf` ★ canonical |
+| `build_fig5_algorithm.py`    | `manuscript/figures/fig5_algorithm_flowchart.pdf` |
+
+### Stage 9 · Manifest & provenance
+
+| Script | Owned artifacts |
+|---|---|
+| `build_manifest.py` | `MANIFEST.sha256`, `docs/data_provenance.md` |
+
+### Stage 10 · LaTeX compile (external tool)
+
+`xelatex + bibtex` write `manuscript/Main.pdf` and various `.aux/.bbl/.log/.out/.toc`
+side-files. Not owned by any Python script; not covered by the ownership contract.
+
+---
+
+## Invariants
+
+1. **Single-writer rule** — no path in the "Owned artifacts" columns appears twice across all
+   production scripts.
+2. **Legacy sinks are marked `_legacy.*`** — when a script's output is superseded but the code is
+   retained for archival, the file name must include `_legacy` to prevent a canonical filename
+   collision. See `estimator_nk.py → fig4_empirical_frontier_legacy.pdf`.
+3. **Reads are unrestricted** — any script may read any file; only writes are constrained.
+4. **New scripts must extend this table**. `check_ownership.py` fails the build if a new production
+   script writes a path not listed here, or if two scripts declare the same output.
+
+---
+
+## Self-check
+
+Run `python scripts/check_ownership.py`. Green output means the on-disk write pattern matches this
+registry. Red output names the conflicting paths and offending scripts. Wire it into every
+replication audit (`_replication_final.py` should invoke it as Test 0 before Test 1).
+
+---
+
+## Change log
+
+- **2026-08-19** · Registry created (v2.1-d). Postmortem of v2.1-c fig4 dual-write bug.

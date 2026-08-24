@@ -1,0 +1,13 @@
+metric,value
+tau_uncontrolled_v2_t,+0.1120
+tau_controlled,+0.1120
+cluster_robust_se,0.0285
+t_stat,+3.9253
+p_wildcluster_B9999,0.0001
+ci95_lo,+0.0195
+ci95_hi,+0.2044
+b_BTC,+0.008529
+b_VIX,-0.000184
+n_obs,169
+n_clusters,13
+pct_change_from_uncontrolled,-0.03

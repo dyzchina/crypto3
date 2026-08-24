@@ -1,0 +1,153 @@
+"""fig4_v2_dual_threshold.py -- Fig 4 with two threshold specifications side by side.
+
+Left column: Q75/IQR venue-specific (original v0.4-δ).
+Right column: Domain hard priors (native>0.15 OR safe<0.60 OR tail>0.25).
+
+Each column has 3 subplots (k=1, 2, 3), so total 2x3 panel.
+"""
+import csv, math, os
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+import numpy as np
+import datetime as dt
+from itertools import combinations
+from pathlib import Path
+
+BASE = Path(__file__).resolve().parent.parent  # cex_contagion_v2.0 root
+
+CSV = BASE / "data" / "processed" / "cex_por_snapshots_wide.csv"
+OUT = BASE / "manuscript" / "figures" / "fig4_empirical_frontier.pdf"
+
+with CSV.open(encoding="utf-8") as f:
+    rows = list(csv.DictReader(f))
+
+VENUES = ["binance", "okx", "bybit"]
+QUARTERS = sorted({r["quarter"] for r in rows})
+N, M = len(VENUES), 5
+d = N * (M - 1)
+
+def get_row(v, q):
+    for r in rows:
+        if r["venue"] == v and r["quarter"] == q:
+            return r
+    return None
+
+def triple(row):
+    safe = float(row["share_BTC"]) + float(row["share_ETH"]) + float(row["share_USDT_USDC"])
+    r_log = math.log(max(safe, 1e-6))
+    native = float(row["share_native_token"])
+    tail = float(row["share_long_tail_alts"])
+    return r_log, native, tail, safe
+
+# --- Q75/IQR panel-wide thresholds ---
+thr_q75 = {}
+for v in VENUES:
+    vs = [triple(get_row(v, q)) for q in QUARTERS]
+    rs, qs, phis = [t[0] for t in vs], [t[1] for t in vs], [t[2] for t in vs]
+    thr_q75[v] = {
+        "r_med": float(np.median(rs)),
+        "r_iqr": float(np.percentile(rs, 75) - np.percentile(rs, 25)),
+        "q75_native": float(np.percentile(qs, 75)),
+        "q75_tail":   float(np.percentile(phis, 75)),
+    }
+
+def distress_q75(v, r, native, tail, safe):
+    t = thr_q75[v]
+    a = r < t["r_med"] - 1.0 * t["r_iqr"]
+    b = native > t["q75_native"] + 1e-9
+    c = tail   > t["q75_tail"]   + 1e-9
+    return int(a or b or c)
+
+def distress_hard(v, r, native, tail, safe):
+    a = native > 0.15 + 1e-9
+    b = safe   < 0.60 - 1e-9
+    c = tail   > 0.25 + 1e-9
+    return int(a or b or c)
+
+def count_nk_by_quarter(distress_fn):
+    out = {q: {1: 0, 2: 0, 3: 0} for q in QUARTERS}
+    for q in QUARTERS:
+        fl = {}
+        for v in VENUES:
+            r_log, nat, tail, safe = triple(get_row(v, q))
+            fl[v] = distress_fn(v, r_log, nat, tail, safe)
+        for k in [1, 2, 3]:
+            cnt = 0
+            for S in combinations(VENUES, k):
+                if all(fl[v] == 1 for v in S):
+                    cnt += 1
+            out[q][k] = cnt
+    return out
+
+nk_q75 = count_nk_by_quarter(distress_q75)
+nk_hard = count_nk_by_quarter(distress_hard)
+
+def alpha(k):
+    return (k - 1) + M * (N - k) / d
+
+def prior(k, T_idx):
+    return (math.log(T_idx + 1)) ** alpha(k)
+
+quarter_idx = {q: i + 1 for i, q in enumerate(QUARTERS)}
+
+def parse_q(qkey):
+    y, qn = qkey.split("-Q")
+    return dt.date(int(y), {1:3,2:6,3:9,4:12}[int(qn)], 15)
+
+xs = [parse_q(q) for q in QUARTERS]
+
+fig, axes = plt.subplots(2, 3, figsize=(11.5, 6.0), sharex=True)
+
+# Row 0: Q75/IQR; Row 1: hard priors
+for row, (title, nk_dict) in enumerate([
+    ("(a) Panel-wise $Q_{75}$/IQR thresholds",  nk_q75),
+    ("(b) Domain hard-prior thresholds",         nk_hard)]):
+    for col, k in enumerate([1, 2, 3]):
+        ax = axes[row, col]
+        ys_emp = [nk_dict[q][k] for q in QUARTERS]
+        ys_prior = [prior(k, quarter_idx[q]) for q in QUARTERS]
+        y0_emp = max(ys_emp[0], 1)
+        y0_prior = ys_prior[0] if ys_prior[0] > 0 else 1
+        scale = y0_emp / y0_prior
+        ys_prior_scaled = [y * scale for y in ys_prior]
+        ax.plot(xs, ys_emp, marker="o", ms=5, lw=1.6,
+                color="firebrick",
+                label=r"$\hat N_" + str(k) + "$ empirical")
+        ax.plot(xs, ys_prior_scaled, ls="--", lw=1.2,
+                color="steelblue",
+                label=r"Prior $c(\log T)^{{{:.2f}}}$".format(alpha(k)))
+        # SEC BTC-ETF approval 2024-01-10
+        etf = dt.date(2024, 1, 10)
+        ax.axvline(etf, color="orange", ls=":", lw=1.0, alpha=0.75)
+        ax.set_title(f"$k = {k}$", fontsize=10)
+        if row == 1:
+            ax.set_xlabel("Quarter", fontsize=8)
+        if col == 0:
+            ax.set_ylabel(r"$k$-fold count", fontsize=9)
+        ax.grid(alpha=0.3)
+        ax.legend(loc="upper left", fontsize=7, framealpha=0.9)
+        ax.tick_params(axis="x", labelsize=7, rotation=30)
+        ax.xaxis.set_major_locator(mdates.YearLocator())
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
+    # Row title
+    axes[row, 0].text(-0.35, 0.5, title, transform=axes[row, 0].transAxes,
+                       rotation=90, ha="center", va="center",
+                       fontsize=10, fontweight="bold")
+
+fig.suptitle(r"Empirical $k$-fold intersection counts vs.\ "
+             r"polylog prior under two threshold specifications",
+             fontsize=11, y=1.00)
+plt.tight_layout()
+plt.savefig(OUT, bbox_inches="tight")
+plt.close()
+print(f"[OK] wrote {OUT}")
+
+# Print summary
+print("\n=== 2024-Q1 (SEC BTC-ETF approval quarter) ===")
+print(f"  Q75/IQR:      N1={nk_q75['2024-Q1'][1]}, N2={nk_q75['2024-Q1'][2]}, N3={nk_q75['2024-Q1'][3]}")
+print(f"  hard priors:  N1={nk_hard['2024-Q1'][1]}, N2={nk_hard['2024-Q1'][2]}, N3={nk_hard['2024-Q1'][3]}  <== HEADLINE (b)")
+print("\n=== 2025-Q3 ===")
+print(f"  Q75/IQR:      N1={nk_q75['2025-Q3'][1]}, N2={nk_q75['2025-Q3'][2]}, N3={nk_q75['2025-Q3'][3]}  <== HEADLINE (a)")
+print(f"  hard priors:  N1={nk_hard['2025-Q3'][1]}, N2={nk_hard['2025-Q3'][2]}, N3={nk_hard['2025-Q3'][3]}")

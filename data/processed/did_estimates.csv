@@ -1,0 +1,5 @@
+estimator,tau_or_att,se,t,p_value,n_treated_cells,n_placebo_cells
+TWFE_naive,+0.111970,0.011133,+10.0579,0.0000,,
+CallawaySantAnna,+0.111970,0.034359,+3.2588,0.0011,39,130
+SunAbraham,+0.111970,0.034359,+3.2588,0.0011,39,130
+BorusyakJaravelSpiess,+0.111970,0.034359,+3.2588,0.0011,,

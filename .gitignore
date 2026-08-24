@@ -1,0 +1,29 @@
+# Cover Letter (per user instruction — investors/reviewers get from submission system)
+submission/
+manuscript/cover_letter.*
+
+# LaTeX auxiliary files (regenerated from Main.tex + refs.bib)
+manuscript/*.aux
+manuscript/*.log
+manuscript/*.out
+manuscript/*.blg
+manuscript/*.bbl
+manuscript/*.toc
+
+# Python cache
+scripts/__pycache__/
+scripts/_sitecustomize_no_net.py
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp / debug files
+_pre_reproduce.json
+_fig4_debug.log
+_fig4_manual.log
+_fig4_audit.log
+_dbg_wrap.py
+_dbg_stdout.log
+_dbg_stderr.log
+_audit_run*.log

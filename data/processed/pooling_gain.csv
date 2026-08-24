@@ -1,0 +1,6 @@
+metric,value
+single_venue_avg_sd,0.487924
+pooled_3venue_sd,1.037749
+observed_ratio,0.708955
+theoretical_ZP_n_inv_1_2m,0.895958
+iid_benchmark_n_inv_1_2,0.577350

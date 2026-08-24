@@ -1,0 +1,6 @@
+specification,tau,SE_cluster,t_stat
+post_approval,0.112491,0.074734,1.505217
+post_grayscale,0.057709,0.031526,1.830537
+pure_anticipation,-0.023835,0.027270,-0.874024
+decomp_ant_only,0.038543,0.022886,1.684134
+decomp_approval,0.142361,0.087107,1.634334

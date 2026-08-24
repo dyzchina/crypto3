@@ -1,0 +1,10 @@
+metric,value
+tau_hat,+0.111970
+se_naive,0.011133
+se_cluster,0.026133
+t_cluster,4.2847
+B_bootstrap,9999
+seed,4626
+p_wild_bootstrap,0.0000
+ci_95_pivotal_lo,+0.0250
+ci_95_pivotal_hi,+0.1990

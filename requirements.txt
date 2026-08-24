@@ -1,0 +1,14 @@
+# Python dependencies pinned to versions used to produce main_eca_v2.pdf.
+# Confirmed on Windows 11 Pro 22621, Python 3.9.6.
+#
+# Install: `pip install -r requirements.txt`
+# Reproduce: `bash run_all.sh` (rebuilds all CSVs + figures + PDF)
+
+pandas==2.3.3
+numpy==1.26.1
+matplotlib==3.8.0
+seaborn==0.13.2
+
+# Standard library modules used (no install needed):
+#   hashlib, pathlib, json, itertools, urllib, datetime,
+#   time, os, sys, re, subprocess

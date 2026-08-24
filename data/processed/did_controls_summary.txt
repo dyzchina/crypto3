@@ -1,0 +1,14 @@
+v2.0-u DiD with additive time-varying controls
+============================================================
+
+Uncontrolled tau (v2.0-t headline): +0.1120
+Controlled  tau (this file)      : +0.1120
+  cluster-robust SE              : 0.0285
+  t-statistic                    : +3.9253
+  wild-cluster-bootstrap p (B=9,999): 0.0001
+  95% pivotal wild-cluster CI    : [+0.0195, +0.2044]
+  attenuation vs uncontrolled    : -0.03%
+
+Control coefficients (informational, not policy-relevant):
+  b_BTC (quarterly log-return): +0.008529
+  b_VIX (quarter-end level)  : -0.000184

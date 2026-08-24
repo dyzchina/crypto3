@@ -1,0 +1,53 @@
+# Bankruptcy docket manifest for Table 1 reserve gaps
+# Generated: 2026-08-18 for cex_contagion_v2.0
+
+[case]
+name: Celsius Network LLC
+case_no: 22-10964
+court: United States Bankruptcy Court, Southern District of New York
+filed: 2022-07-13
+docket_site: https://cases.stretto.com/celsius
+declaration: Declaration of Alex Mashinsky, Chief Executive Officer, in Support of Chapter 11 Petitions and First Day Motions
+reserve_gap_usd_bn: 1.2
+reserve_gap_ref: First-day declaration, ¶ 47-56 (assets vs customer liabilities)
+
+[case]
+name: Voyager Digital Holdings, Inc.
+case_no: 22-10943
+court: United States Bankruptcy Court, Southern District of New York
+filed: 2022-07-05
+docket_site: https://cases.stretto.com/voyager
+declaration: Declaration of Stephen Ehrlich, Chief Executive Officer, in Support of Chapter 11 Petitions and First Day Motions
+reserve_gap_usd_bn: 1.3
+reserve_gap_ref: First-day declaration Schedule A (crypto assets vs customer accounts)
+
+[case]
+name: FTX Trading Ltd. (with Alameda Research LLC)
+case_no: 22-11068
+court: United States Bankruptcy Court, District of Delaware
+filed: 2022-11-11
+docket_site: https://restructuring.ra.kroll.com/FTX
+declaration: Declaration of John J. Ray III in Support of Chapter 11 Petitions and First Day Motions
+reserve_gap_usd_bn: 8.7
+reserve_gap_ref: Ray declaration (Nov 17, 2022), Section III.A (customer-fund misappropriation summary)
+
+[case]
+name: BlockFi Inc.
+case_no: 22-19361
+court: United States Bankruptcy Court, District of New Jersey
+filed: 2022-11-28
+docket_site: https://restructuring.ra.kroll.com/BlockFi
+declaration: Declaration of Mark A. Renzi, Financial Advisor to the Debtors, in Support of the Debtors' Chapter 11 Petitions and First Day Motions
+reserve_gap_usd_bn: 1.3
+reserve_gap_ref: Renzi first-day declaration, Schedule of Assets and Liabilities summary
+
+[case]
+name: Genesis Global Capital, LLC
+case_no: 23-10063
+court: United States Bankruptcy Court, Southern District of New York
+filed: 2023-01-19
+docket_site: https://restructuring.ra.kroll.com/genesis
+declaration: Declaration of A. Derar Islim, Interim Chief Executive Officer, in Support of the Debtors' Chapter 11 Petitions and First Day Motions
+reserve_gap_usd_bn: 3.4
+reserve_gap_ref: Islim first-day declaration ¶ 20 (intercompany loan portfolio impairment)
+
